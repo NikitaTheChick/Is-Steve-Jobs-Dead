@@ -17,6 +17,19 @@ def main(page: flet.Page):
             flet.View(
                 "/",
                 [
+                    flet.Stack(
+                        [
+                            flet.Image(src="/steve_jobs.png", fit=flet.ImageFit.CONTAIN),
+                            flet.Row(
+                                [
+                                    flet.Text("Is Steve Jobs Dead?!", size=40)
+                                ],
+                                alignment=flet.MainAxisAlignment.CENTER,
+                            ),
+                        ],
+                        width = 800,
+                        height = 800,
+                    ),
                     flet.ElevatedButton("Is He Dead?", on_click=lambda _: page.go("/steve")),
                 ], horizontal_alignment=flet.CrossAxisAlignment.CENTER
             )
@@ -27,7 +40,19 @@ def main(page: flet.Page):
                 flet.View(
                     "/steve",
                     [
-                        flet.Text("Yea...he's dead"),
+                        flet.Stack(
+                        [
+                            flet.Image(src="/dead_jobs.png", fit=flet.ImageFit.CONTAIN),
+                            flet.Row(
+                                [
+                                    flet.Text("Yea, he's dead...", size=40)
+                                ],
+                                alignment=flet.MainAxisAlignment.CENTER,
+                            ),
+                        ],
+                        width = 800,
+                        height = 800,
+                    ),
                     ], horizontal_alignment=flet.CrossAxisAlignment.CENTER
                 )
             )
@@ -47,4 +72,4 @@ def main(page: flet.Page):
     page.go(page.route)
 
 
-flet.app(main, view=flet.AppView.WEB_BROWSER)
+flet.app(main, assets_dir="assets", view=flet.AppView.WEB_BROWSER)
