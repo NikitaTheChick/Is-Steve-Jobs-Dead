@@ -4,6 +4,9 @@ import requests as req
 def main(page: flet.Page):
     page.title = "Is Steve Jobs Dead?"
     page.vertical_alignment = flet.MainAxisAlignment.CENTER
+    page.fonts = {
+        "Planet Benson": "/planetbe.ttf"
+    }
 
     # This function has to fire a get request, decode the JSON, and return the page view
     def find_out(e):
