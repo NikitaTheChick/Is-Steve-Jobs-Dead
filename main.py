@@ -5,8 +5,11 @@ def main(page: flet.Page):
     page.title = "Is Steve Jobs Dead?"
     page.vertical_alignment = flet.MainAxisAlignment.CENTER
     page.fonts = {
-        "Planet Benson": "/planetbe.ttf"
+        "Planet Benson": "/fonts/planetbe.ttf"
     }
+
+    jobs1 = flet.Image(src="/steve_jobs.png", fit=flet.ImageFit.CONTAIN, top=0, left=0, border_radius=400)
+    jobs2 = flet.Image(src="/dead_jobs.png", fit=flet.ImageFit.CONTAIN, top=0, left=0, border_radius=400)
 
     # This function has to fire a get request, decode the JSON, and return the page view
     def find_out(e):
@@ -22,10 +25,11 @@ def main(page: flet.Page):
                 [
                     flet.Stack(
                         [
-                            flet.Image(src="/steve_jobs.png", fit=flet.ImageFit.CONTAIN),
+                            #flet.Image(src="/steve_jobs.png", fit=flet.ImageFit.CONTAIN, border_radius=200),
+                            jobs1,
                             flet.Row(
                                 [
-                                    flet.Text("Is Steve Jobs Dead?!", size=40)
+                                    flet.Text("Is Steve Jobs Dead?!", size=40, font_family="Planet Benson")
                                 ],
                                 alignment=flet.MainAxisAlignment.CENTER,
                             ),
@@ -33,11 +37,10 @@ def main(page: flet.Page):
                         width = 800,
                         height = 800,
                     ),
-                    flet.ElevatedButton("Is He Dead?", on_click=lambda _: page.go("/steve")),
+                    flet.ElevatedButton(content=flet.Text("Is He Dead?!", size=20, weight=flet.FontWeight.BOLD), on_click=lambda _: page.go("/steve"))
                 ], horizontal_alignment=flet.CrossAxisAlignment.CENTER
             )
         )
-        # Initialized App View - Displays Animated Dead Steve graphic with text stating death status
         if page.route == "/steve":
             page.views.append(
                 flet.View(
@@ -45,10 +48,11 @@ def main(page: flet.Page):
                     [
                         flet.Stack(
                         [
-                            flet.Image(src="/dead_jobs.png", fit=flet.ImageFit.CONTAIN),
+                            #flet.Image(src="/steve_jobs.png", fit=flet.ImageFit.CONTAIN, border_radius=200),
+                            jobs2,
                             flet.Row(
                                 [
-                                    flet.Text("Yea, he's dead...", size=40)
+                                    flet.Text("Yea he's dead...", size=40, font_family="Planet Benson")
                                 ],
                                 alignment=flet.MainAxisAlignment.CENTER,
                             ),
@@ -56,6 +60,7 @@ def main(page: flet.Page):
                         width = 800,
                         height = 800,
                     ),
+                    flet.ElevatedButton(content=flet.Text("Yea he's dead...", size=20, weight=flet.FontWeight.BOLD), on_click=lambda _: page.go("/"))
                     ], horizontal_alignment=flet.CrossAxisAlignment.CENTER
                 )
             )
