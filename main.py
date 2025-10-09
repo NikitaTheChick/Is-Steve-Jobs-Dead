@@ -14,6 +14,10 @@ def main(page: flet.Page):
     # This function has to fire a get request, decode the JSON, and return the page view
     def find_out(e):
         r = req.get("http://api.dummysite.org")
+        if r.json() == [{"response": True}]:
+            page.go("/steve")
+        else:
+            page.go("/dead")
 
     def animate(e):
         if jobs1.left != 0:
