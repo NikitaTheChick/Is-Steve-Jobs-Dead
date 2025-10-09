@@ -8,12 +8,17 @@ def main(page: flet.Page):
         "Planet Benson": "/fonts/planetbe.ttf"
     }
 
-    jobs1 = flet.Image(src="/steve_jobs.png", fit=flet.ImageFit.CONTAIN, top=0, left=0, border_radius=400)
-    jobs2 = flet.Image(src="/dead_jobs.png", fit=flet.ImageFit.CONTAIN, top=0, left=0, border_radius=400)
+    jobs1 = flet.Image(src="/steve_jobs.png", fit=flet.ImageFit.CONTAIN, top=0, left=-800, border_radius=400, animate_position=flet.Animation(150, flet.AnimationCurve.EASE_OUT))
+    jobs2 = flet.Image(src="/dead_jobs.png", fit=flet.ImageFit.CONTAIN, top=0, left=0, border_radius=400, animate_position=flet.Animation(1000, flet.AnimationCurve.EASE_OUT))
 
     # This function has to fire a get request, decode the JSON, and return the page view
     def find_out(e):
         r = req.get("http://api.dummysite.org")
+
+    def animate(e):
+        if jobs1.left != 0:
+            jobs1.left = 0
+        jobs1.update()
 
     # This function builds the routes to the page views
     def route_change(route):
@@ -37,7 +42,12 @@ def main(page: flet.Page):
                         width = 800,
                         height = 800,
                     ),
-                    flet.ElevatedButton(content=flet.Text("Is He Dead?!", size=20, weight=flet.FontWeight.BOLD), on_click=lambda _: page.go("/steve"))
+                    flet.ElevatedButton(
+                        content=flet.Text("Is He Dead?!",
+                        size=20,
+                        weight=flet.FontWeight.BOLD),
+                        on_click=lambda _: page.go("/steve"),
+                        on_hover=animate)
                 ], horizontal_alignment=flet.CrossAxisAlignment.CENTER
             )
         )
@@ -49,6 +59,7 @@ def main(page: flet.Page):
                         flet.Stack(
                         [
                             #flet.Image(src="/steve_jobs.png", fit=flet.ImageFit.CONTAIN, border_radius=200),
+                            #ft.Container(content=ft.CircleAvatar(bgcolor=ft.Colors.GREEN, radius=5), alignment=ft.alignment.bottom_left),
                             jobs2,
                             flet.Row(
                                 [
