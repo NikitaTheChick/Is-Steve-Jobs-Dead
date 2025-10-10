@@ -3,6 +3,7 @@ import requests as req
 
 def main(page: flet.Page):
     page.title = "Is Steve Jobs Dead?"
+    page.adaptive = True
     page.vertical_alignment = flet.MainAxisAlignment.CENTER
     page.fonts = {
         "Planet Benson": "/fonts/planetbe.ttf"
@@ -74,8 +75,7 @@ def main(page: flet.Page):
                         ],
                         width = 800,
                         height = 800,
-                    ),
-                    flet.ElevatedButton(content=flet.Text("Yea he's dead...", size=20, weight=flet.FontWeight.BOLD), on_click=lambda _: page.go("/"))
+                    )
                     ], horizontal_alignment=flet.CrossAxisAlignment.CENTER
                 )
             )
