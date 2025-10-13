@@ -10,11 +10,12 @@ def main(page: flet.Page):
         "Planet Benson": "/fonts/planetbe.ttf"
     }
 
+    # Helper variables
     evnt = threading.Event()
     jobs1 = flet.Image(src="/steve_jobs.png", fit=flet.ImageFit.CONTAIN, scale=0.6, top=0, left=-800, border_radius=400, animate_position=flet.Animation(150, flet.AnimationCurve.EASE_OUT))
     jobs2 = flet.Image(src="/dead_jobs.png", fit=flet.ImageFit.CONTAIN, scale=0.6, top=0, left=-200, border_radius=400, animate_position=flet.Animation(1000, flet.AnimationCurve.EASE_OUT))
 
-    # This function has to fire a get request, decode the JSON, and return the page view
+    # This function fires a get request, decodes the JSON, returns the page view, waits, then triggers the animation
     def find_out(e):
         r = req.get("http://api.dummysite.org")
         if r.json() == [{"response": True}]:
@@ -26,6 +27,7 @@ def main(page: flet.Page):
             jobs2.left = -200
         jobs2.update()
 
+    # This function is used to animate the initial page view. It displays an animation, waits, then proceeds to the next page view
     def animate(e):
         if jobs1.left != -200:
             jobs1.left = -200
@@ -33,7 +35,7 @@ def main(page: flet.Page):
         evnt.wait(1)
         page.go("/steve")
 
-    # This function builds the routes to the page views
+    # This function programatically builds the routes to the page views
     def route_change(route):
         page.views.clear()
         page.views.append(
@@ -43,7 +45,6 @@ def main(page: flet.Page):
                 [
                     flet.Stack(
                         [
-                            #flet.Image(src="/steve_jobs.png", fit=flet.ImageFit.CONTAIN, border_radius=200),
                             jobs1,
                             flet.Row(
                                 [
@@ -62,13 +63,12 @@ def main(page: flet.Page):
         )
         if page.route == "/steve":
             page.views.append(
+                #Post Press Page View - Displays animated Dead Jobs graphic
                 flet.View(
                     "/steve",
                     [
                         flet.Stack(
                         [
-                            #flet.Image(src="/steve_jobs.png", fit=flet.ImageFit.CONTAIN, border_radius=200),
-                            #ft.Container(content=ft.CircleAvatar(bgcolor=ft.Colors.GREEN, radius=5), alignment=ft.alignment.bottom_left),
                             jobs2,
                             flet.Row(
                                 [
@@ -83,7 +83,7 @@ def main(page: flet.Page):
                     ], horizontal_alignment=flet.CrossAxisAlignment.CENTER
                 )
             )
-        # Error Page View (Displays if communication with server interrupted) - Error Graphic with text and return to home button
+        # Error Page View - (Displays if communication with server interrupted) - Error Graphic with text and return to home button - TBD
         if page.route == "/dead":
             page.views.append(
                 flet.View(
