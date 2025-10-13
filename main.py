@@ -1,5 +1,6 @@
 import flet as flet
 import requests as req
+import threading
 
 def main(page: flet.Page):
     page.title = "Is Steve Jobs Dead?"
@@ -9,8 +10,9 @@ def main(page: flet.Page):
         "Planet Benson": "/fonts/planetbe.ttf"
     }
 
-    jobs1 = flet.Image(src="/steve_jobs.png", fit=flet.ImageFit.CONTAIN, top=0, left=-800, border_radius=400, animate_position=flet.Animation(150, flet.AnimationCurve.EASE_OUT))
-    jobs2 = flet.Image(src="/dead_jobs.png", fit=flet.ImageFit.CONTAIN, top=0, left=0, border_radius=400, animate_position=flet.Animation(1000, flet.AnimationCurve.EASE_OUT))
+    evnt = threading.Event()
+    jobs1 = flet.Image(src="/steve_jobs.png", fit=flet.ImageFit.CONTAIN, scale=0.6, top=0, left=-800, border_radius=400, animate_position=flet.Animation(150, flet.AnimationCurve.EASE_OUT))
+    jobs2 = flet.Image(src="/dead_jobs.png", fit=flet.ImageFit.CONTAIN, scale=0.6, top=0, left=-200, border_radius=400, animate_position=flet.Animation(1000, flet.AnimationCurve.EASE_OUT))
 
     # This function has to fire a get request, decode the JSON, and return the page view
     def find_out(e):
@@ -19,11 +21,17 @@ def main(page: flet.Page):
             page.go("/steve")
         else:
             page.go("/dead")
+        evnt.wait(1)
+        if jobs2.left != -200:
+            jobs2.left = -200
+        jobs2.update()
 
     def animate(e):
-        if jobs1.left != 0:
-            jobs1.left = 0
+        if jobs1.left != -200:
+            jobs1.left = -200
         jobs1.update()
+        evnt.wait(1)
+        page.go("/steve")
 
     # This function builds the routes to the page views
     def route_change(route):
@@ -39,20 +47,16 @@ def main(page: flet.Page):
                             jobs1,
                             flet.Row(
                                 [
-                                    flet.Text("Is Steve Jobs Dead?!", size=40, font_family="Planet Benson")
+                                    flet.Text("Is Steve Jobs Dead?!", size=28, font_family="Planet Benson")
                                 ],
                                 alignment=flet.MainAxisAlignment.CENTER,
-                            ),
+                                top=20,
+                            )
                         ],
-                        width = 800,
-                        height = 800,
+                        width = 360,
+                        height = 640,
                     ),
-                    flet.ElevatedButton(
-                        content=flet.Text("Is He Dead?!",
-                        size=20,
-                        weight=flet.FontWeight.BOLD),
-                        on_click=lambda _: page.go("/steve"),
-                        on_hover=animate)
+                    flet.ElevatedButton(content=flet.Text("Is He Dead?!", size=20, weight=flet.FontWeight.BOLD), on_click=animate)
                 ], horizontal_alignment=flet.CrossAxisAlignment.CENTER
             )
         )
@@ -68,13 +72,13 @@ def main(page: flet.Page):
                             jobs2,
                             flet.Row(
                                 [
-                                    flet.Text("Yea he's dead...", size=40, font_family="Planet Benson")
+                                    flet.Text("Yea he's dead...", size=28, font_family="Planet Benson")
                                 ],
                                 alignment=flet.MainAxisAlignment.CENTER,
                             ),
                         ],
-                        width = 800,
-                        height = 800,
+                        width = 360,
+                        height = 640,
                     )
                     ], horizontal_alignment=flet.CrossAxisAlignment.CENTER
                 )
